@@ -2,8 +2,8 @@
 Scripts for installing Fedora26 with Xfce on ZFS root filesystem
 
 Scripts are based on the following manuals:
-http://www.thecrosseroads.net/2016/02/booting-a-zfs-root-via-uefi-on-debian/
-https://www.csparks.com/BootFedoraZFS/index.html
+* http://www.thecrosseroads.net/2016/02/booting-a-zfs-root-via-uefi-on-debian/
+* https://www.csparks.com/BootFedoraZFS/index.html
 
 # Warning
 Scripts does not have safeguards and meant to be used with caution.
