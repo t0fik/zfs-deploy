@@ -9,6 +9,7 @@ https://www.csparks.com/BootFedoraZFS/index.html
 Scripts does not have safeguards and meant to be used with caution.
 
 ## Requirements
+1. UEFI hardware
 1. Fedora LiveCD with ZFS support ( kickstarts included or download from [here](http://rpms.jdsieci.pl/fedora/) )
 1. Clean block device
 
