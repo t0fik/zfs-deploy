@@ -1,0 +1,37 @@
+#!/bin/bash
+
+. $(dirname $0)/config
+zpool import -R ${SYSROOT} rpool
+
+dnf -y --installroot=${SYSROOT} --releasever=26 install \
+  filesystem \
+  fedora-release \
+  fedora-repos \
+  rpmfusion-free-release \
+  rpmfusion-nonfree-release \
+  zfs-release
+
+
+cp -f /etc/resolv.conf ${SYSROOT}/etc/resolv.conf
+cp -f ${TEMP_DIR}/fstab ${SYSROOT}/etc/fstab
+
+for mp in dev sys proc run;do
+  mount -o bind /$mp ${SYSROOT}/$mp
+done
+
+
+efi=$(awk '$2=="/boot/efi"{print $1}' ${TEMP_DIR}/fstab)
+
+mkdir -p ${SYSROOT}/boot/efi
+
+mount -t efivarfs efivarfs ${SYSROOT}/sys/firmware/efi/efivars
+mount $efi ${SYSROOT}/boot/efi
+
+
+dnf -y --installroot=${SYSROOT} --releasever=26 install \
+  dnf
+
+#cp -fr $(dirname $0) ${SYSROOT}
+
+#echo "Chrooting to ${SYSROOT}"
+#chroot ${SYSROOT}

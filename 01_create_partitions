@@ -1,0 +1,33 @@
+#!/bin/bash
+
+if [ $# -eq 0 ];then
+  read -p "Installation device: " disk
+elif [ $# -eq 1 ];then
+  disk=$1
+else
+  echo "$0 path_to_device"
+  exit 1
+fi
+
+. $(dirname $0)/config
+
+
+fdisk $disk << EOF
+g
+n
+1
+
++200M
+t
+1
+n
+2
+
+
+t
+2
+48
+w
+EOF
+
+echo "disk=${disk}" > ${TEMP_DIR}/install_device

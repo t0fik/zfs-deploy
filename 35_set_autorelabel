@@ -1,0 +1,5 @@
+#!/bin/bash
+
+. $(dirname $0)/config
+
+touch ${SYSROOT}/.autorelabel

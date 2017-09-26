@@ -1,0 +1,35 @@
+--- etc/grub.d/10_linux.orig	2017-09-24 16:21:11.717415521 +0200
++++ etc/grub.d/10_linux	2017-09-24 22:08:50.973738949 +0200
+@@ -56,15 +56,17 @@
+ 
+ case x"$GRUB_FS" in
+     xbtrfs)
++	ROOTEQ="root="
+ 	rootsubvol="`make_system_path_relative_to_its_root /`"
+ 	rootsubvol="${rootsubvol#/}"
+ 	if [ "x${rootsubvol}" != x ]; then
+ 	    GRUB_CMDLINE_LINUX="rootflags=subvol=${rootsubvol} ${GRUB_CMDLINE_LINUX}"
+ 	fi;;
+     xzfs)
++	ROOTEQ="root="
+ 	rpool=`${grub_probe} --device ${GRUB_DEVICE} --target=fs_label 2>/dev/null || true`
+ 	bootfs="`make_system_path_relative_to_its_root / | sed -e "s,@$,,"`"
+-	LINUX_ROOT_DEVICE="ZFS=${rpool}${bootfs}"
++	LINUX_ROOT_DEVICE=""
+ 	;;
+ esac
+ 
+@@ -158,11 +160,11 @@
+   fi
+   if [ -d /sys/firmware/efi ]; then
+     sed "s/^/$submenu_indentation/" << EOF
+-	${linuxefi} ${rel_dirname}/${basename} root=${linux_root_device_thisversion} ro ${args}
++	${linuxefi} ${rel_dirname}/${basename} ${ROOTEQ}${linux_root_device_thisversion} ro ${args}
+ EOF
+   else
+     sed "s/^/$submenu_indentation/" << EOF
+-	linux${sixteenbit} ${rel_dirname}/${basename} root=${linux_root_device_thisversion} ro ${args}
++	linux${sixteenbit} ${rel_dirname}/${basename} ${ROOTEQ}${linux_root_device_thisversion} ro ${args}
+ EOF
+   fi
+   if test -n "${initrd}" ; then

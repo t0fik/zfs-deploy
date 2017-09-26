@@ -1,0 +1,12 @@
+#!/bin/bash
+
+. $(dirname $0)/config
+
+scriptpath=$(realpath $0)
+patch_path=$(dirname $scriptpath)/patches
+
+pushd ${SYSROOT}
+for p in ${patch_path}/*.patch;do
+  patch -p0 -i $p
+done
+popd

@@ -1,0 +1,43 @@
+#!/bin/bash
+
+. $(dirname $0)/config
+
+if [ -f "${TEMP_DIR}/install_device" ];then
+  . ${TEMP_DIR}/install_device
+elif [ $# -eq 1 ];then
+  disk=$1
+else
+  echo "$0 path_to_device"
+  exit 1
+fi
+
+# be sure that zfs is loaded
+modprobe zfs
+
+zpool create -f -m none -o altroot=/sysroot rpool ${disk}2
+zfs set atime=off rpool
+zfs set relatime=on rpool
+zfs set compression=lz4 rpool
+zfs set acltype=posixacl rpool
+zfs set aclinherit=passthrough rpool
+
+zfs create -o compression=off -V 4G rpool/swap
+mkswap -L swap /dev/zvol/rpool/swap
+
+#create datasets
+zfs create -o mountpoint=none rpool/ROOT
+zfs create -o mountpoint=/ rpool/ROOT/fedora26
+zfs set mountpoint=/rpool rpool
+
+zpool set bootfs=rpool/ROOT/fedora26 rpool
+
+zfs create -o mountpoint=/var rpool/ROOT/fedora26/var
+zfs create -o mountpoint=/var/tmp rpool/ROOT/fedora26/var/tmp
+zfs create -o mountpoint=legacy rpool/tmp
+
+mkdir -p ${SYSROOT}/etc/zfs
+zpool set cachefile=${SYSROOT}/etc/zfs/zpool.cache rpool
+
+zpool export rpool
+
+

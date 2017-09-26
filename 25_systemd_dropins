@@ -1,0 +1,15 @@
+#!/bin/bash
+
+. $(dirname $0)/config
+
+dropin_dir=${SYSROOT}/etc/systemd/system
+
+#force mounting zfs before reaching local-fs target
+mkdir -p ${dropin_dir}/local-fs.target.d
+cat >${dropin_dir}/local-fs.target.d/zfs.conf << EOF
+#ZFS related dependencies
+[Unit]
+Wants=zfs.target
+Before=systemd-random-seed.service
+EOF
+

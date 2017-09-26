@@ -1,0 +1,15 @@
+#!/bin/bash
+
+. $(dirname $0)/config
+
+script=$(mktemp -u )
+
+cat > ${SYSROOT}/$script <<EOF
+#!/bin/bash
+systemctl enable initial-setup.service
+touch /.unconfigured
+EOF
+chmod 755 ${SYSROOT}/$script
+chroot ${SYSROOT} $script
+rm -f ${SYSROOT}/$script
+

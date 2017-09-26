@@ -1,0 +1,42 @@
+#!/bin/bash
+
+. $(dirname $0)/config
+
+
+
+#grap root password
+echo "Set root password"
+while true;do
+  read -s -p "Password: " password
+  echo
+  read -s -p "Repeat password: " password2
+  echo
+  if [ "x$password" == "x$password2" ];then
+    break
+  fi
+  echo "Passwords didn't match"
+done
+
+
+echo "Set hostname"
+read -p "Hostname: " hostname
+
+script=$(mktemp -u )
+
+cat > ${SYSROOT}/$script <<EOF
+#!/bin/bash
+authconfig --enableshadow --passalgo=sha512 --enablesssd --enablesssdauth --update
+echo '$password' | passwd --stdin root
+timedatectl set-timezone Europe/Warsaw
+hostnamectl set-hostname ${hostname}
+EOF
+chmod 755 ${SYSROOT}/$script
+
+setenforce 0
+chroot ${SYSROOT} $script
+setenforce 1
+
+rm -f ${SYSROOT}/$script
+
+#touch ${SYSROOT}/.autorelabel
+

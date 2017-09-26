@@ -1,0 +1,19 @@
+#!/bin/bash
+
+. $(dirname $0)/config
+
+dnf -y --installroot=${SYSROOT} --releasever=26 install \
+  xorg-x11-drv-libinput \
+  xorg-x11-server-Xorg \
+  lightdm \
+  @Xfce
+
+script=$(mktemp -u )
+cat > ${SYSROOT}/$script <<EOF
+systemctl enable lightdm
+systemctl set-default graphical.target
+EOF
+chmod 755 ${SYSROOT}/$script
+chroot ${SYSROOT} $script
+rm -f ${SYSROOT}/$script
+

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+path=$(realpath $0)
+path=$(dirname $path)
+
+for script in $path/0[1-9]*;do
+  $script
+done
+

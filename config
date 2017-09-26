@@ -1,0 +1,5 @@
+TEMP_DIR=/tmp/zfs-deploy
+SYSROOT=/sysroot
+
+
+[[ ! -d ${TEMP_DIR} ]] && mkdir -p ${TEMP_DIR}
