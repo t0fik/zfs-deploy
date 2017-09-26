@@ -2,7 +2,6 @@
 %include kickstarts/repos.ks
 %include kickstarts/broadcom-wlan.ks
 %include kickstarts/tools.ks
-%include kicstarts/zfs-deployment.ks
 
 timezone Europe/Warsaw
 
