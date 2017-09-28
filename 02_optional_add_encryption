@@ -11,7 +11,7 @@ else
   exit 1
 fi
 
-cryptsetup luksFormat ${install_part}
+cryptsetup luksFormat --cipher aes-xts-plain64 --key-size 512 --hash sha512 ${install_part}
 cryptsetup luksOpen ${install_part} cryptroot
 
 cat > ${TEMP_DIR}/install_device << EOF
