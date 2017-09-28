@@ -5,7 +5,6 @@
 
 
 cat > ${SYSROOT}/etc/default/grub << 'EOF'
-GRUB_PRELOAD_MODULES="zfs"
 GRUB_TIMEOUT=5
 GRUB_DISTRIBUTOR="$(sed 's, release .*$,,g' /etc/system-release)"
 GRUB_DEFAULT=saved
@@ -16,6 +15,9 @@ EOF
 
 if [ "x${encryption}" == "xyes" ];then
   echo GRUB_ENABLE_CRYPTODISK=y >> ${SYSROOT}/etc/default/grub
+  echo 'GRUB_PRELOAD_MODULES="zfs luks cryptodisk"' >> ${SYSROOT}/etc/default/grub
+else
+  echo 'GRUB_PRELOAD_MODULES="zfs"' >> ${SYSROOT}/etc/default/grub
 fi
 
 
@@ -38,7 +40,7 @@ fi
 
 cat >> ${SYSROOT}/$script <<EOF
 cp -a /usr/lib/grub/x86_64-efi/zfs{,crypt}.mod /boot/efi/EFI/fedora/x86_64-efi
-grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
+ZPOOL_VDEV_NAME_PATH=1 grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
 EOF
 chmod 755 ${SYSROOT}/$script
 

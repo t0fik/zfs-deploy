@@ -1,0 +1,8 @@
+#!/bin/bash
+
+. $(dirname $0)/config
+
+cat > ${SYSROOT}/etc/profile.d/zfs.sh <<EOF
+export ZPOOL_VDEV_NAME_PATH=YES
+EOF
+
