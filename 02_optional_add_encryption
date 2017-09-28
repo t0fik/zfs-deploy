@@ -16,6 +16,7 @@ cryptsetup luksOpen ${install_part} cryptroot
 
 cat > ${TEMP_DIR}/install_device << EOF
 disk=${disk}
+luks_device=${install_part}
 install_part=/dev/mapper/cryptroot
 efi_part=${efi_part}
 encryption=yes
