@@ -38,5 +38,3 @@ setenforce 1
 
 rm -f ${SYSROOT}/$script
 
-#touch ${SYSROOT}/.autorelabel
-

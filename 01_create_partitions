@@ -30,4 +30,8 @@ t
 w
 EOF
 
-echo "disk=${disk}" > ${TEMP_DIR}/install_device
+cat > ${TEMP_DIR}/install_device << EOF
+device=${disk}
+install_part=${disk}2
+efi_part=${disk}1
+EOF

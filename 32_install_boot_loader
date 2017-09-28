@@ -3,6 +3,7 @@
 . $(dirname $0)/config
 . ${TEMP_DIR}/install_device
 
+
 cat > ${SYSROOT}/etc/default/grub << 'EOF'
 GRUB_PRELOAD_MODULES="zfs"
 GRUB_TIMEOUT=5
@@ -13,12 +14,29 @@ GRUB_DEFAULT=saved
 GRUB_CMDLINE_LINUX="quiet"
 EOF
 
+if [ "x${encryption}" == "xyes" ];then
+  echo GRUB_ENABLE_CRYPTODISK=y >> ${SYSROOT}/etc/default/grub
+fi
+
 
 script=$(mktemp -u )
 
 cat > ${SYSROOT}/$script <<EOF
 #!/bin/bash
 mkdir -p /boot/efi/EFI/fedora/x86_64-efi
+EOF
+
+if [ "x${encryption}" == "xyes" ];then
+cat >> ${SYSROOT}/$script <<EOF
+cp -f /usr/lib/grub/x86_64-efi/archelp.mod /boot/efi/EFI/fedora/x86_64-efi/
+cp -f /usr/lib/grub/x86_64-efi/gcry_{sha256,sha512,rijndael}.mod /boot/efi/EFI/fedora/x86_64-efi
+cp -f /usr/lib/grub/x86_64-efi/procfs.mod /boot/efi/EFI/fedora/x86_64-efi
+cp -f /usr/lib/grub/x86_64-efi/luks.mod /boot/efi/EFI/fedora/x86_64-efi
+cp -a /usr/lib/grub/x86_64-efi/crypto{,disk}.mod /boot/efi/EFI/fedora/x86_64-efi
+EOF
+fi
+
+cat >> ${SYSROOT}/$script <<EOF
 cp -a /usr/lib/grub/x86_64-efi/zfs{,crypt}.mod /boot/efi/EFI/fedora/x86_64-efi
 grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
 EOF

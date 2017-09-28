@@ -5,12 +5,12 @@
 if [ -f "${TEMP_DIR}/install_device" ];then
   . ${TEMP_DIR}/install_device
 elif [ $# -eq 1 ];then
-  disk=$1
+  efi_part=$1
 else
   echo "$0 path_to_device"
   exit 1
 fi
 
-mkfs.vfat ${disk}1
+mkfs.vfat ${efi_part}
 sleep 1
 

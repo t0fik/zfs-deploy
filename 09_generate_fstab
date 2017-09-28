@@ -12,8 +12,9 @@ else
 fi
 
 #generate temp fstab
-rm -f ${TEMP_DIR}/fstab
-printf "/dev/zvol/rpool/swap\tnone\t\tswap\t\tdefaults\t0 0\n" >>${TEMP_DIR}/fstab
-printf "UUID=%b\t\t/boot/efi\t\tvfat\t\tumask=0077,shortname=winnt\t0 0\n" $(lsblk -o UUID ${disk}1|tail -n1) >>${TEMP_DIR}/fstab
-printf "rpool/tmp\t\t/tmp\t\tzfs\tdefaults\t0 0\n" >> ${TEMP_DIR}/fstab
+mkdir -p ${TEMP_DIR}/etc
+rm -f ${TEMP_DIR}/etc/fstab
+printf "/dev/zvol/rpool/swap\tnone\t\tswap\t\tdefaults\t0 0\n" >>${TEMP_DIR}/etc/fstab
+printf "UUID=%b\t\t/boot/efi\t\tvfat\t\tumask=0077,shortname=winnt\t0 0\n" $(lsblk -o UUID ${efi_part}|tail -n1) >>${TEMP_DIR}/etc/fstab
+printf "rpool/tmp\t\t/tmp\t\tzfs\tdefaults\t0 0\n" >> ${TEMP_DIR}/etc/fstab
 

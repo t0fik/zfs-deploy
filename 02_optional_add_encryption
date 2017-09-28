@@ -1,0 +1,27 @@
+#!/bin/bash
+
+. $(dirname $0)/config
+
+if [ -f "${TEMP_DIR}/install_device" ];then
+  . ${TEMP_DIR}/install_device
+elif [ $# -eq 1 ];then
+  install_part=$1
+else
+  echo "$0 path_to_device"
+  exit 1
+fi
+
+cryptsetup luksFormat ${install_part}
+cryptsetup luksOpen ${install_part} cryptroot
+
+cat > ${TEMP_DIR}/install_device << EOF
+disk=${disk}
+install_part=/dev/mapper/cryptroot
+efi_part=${efi_part}
+encryption=yes
+EOF
+
+mkdir -p ${TEMP_DIR}/etc
+cat > ${TEMP_DIR}/etc/crypttab << EOF
+cryptroot UUID=$(cryptsetup luksUUID $install_part)
+EOF

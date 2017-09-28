@@ -5,7 +5,7 @@
 if [ -f "${TEMP_DIR}/install_device" ];then
   . ${TEMP_DIR}/install_device
 elif [ $# -eq 1 ];then
-  disk=$1
+  install_part=$1
 else
   echo "$0 path_to_device"
   exit 1
@@ -14,7 +14,7 @@ fi
 # be sure that zfs is loaded
 modprobe zfs
 
-zpool create -f -m none -o altroot=/sysroot rpool ${disk}2
+zpool create -f -m none -o altroot=/sysroot rpool ${install_part}
 zfs set atime=off rpool
 zfs set relatime=on rpool
 zfs set compression=lz4 rpool
