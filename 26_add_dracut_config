@@ -7,9 +7,9 @@ mkdir ${SYSROOT}/keys
 chmod 700 ${SYSROOT}/keys
 cat > ${SYSROOT}/etc/dracut.conf.d/99-crypto_keys_in_initrd.conf <<EOF
 #Allows to type password only once
-# dd bs=512 count=8 if=/dev/urandom of=/keys/cryptoroot_keyfile.bin
-# cryptosetup luksAddKey ${luks_device} /keys/cryptoroot_keyfile.bin
-# add keypath to last column in /etc/crypttab
-install_optional_items+="/keys/cryptoroot_keyfile.bin"
+# dd bs=512 count=8 if=/dev/urandom of=/keys/$(basename ${install_part})_keyfile.bin
+# cryptsetup luksAddKey ${luks_device} /keys/$(basename ${install_part})_keyfile.bin
+# add keypath to /etc/crypttab
+install_optional_items+="/keys/*"
 EOF
 
