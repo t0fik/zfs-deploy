@@ -49,5 +49,5 @@ chroot ${SYSROOT} $script
 rm -f ${SYSROOT}/$script
 
 if [ -z "$(efibootmgr|grep fedora)" ];then
-  efibootmgr -L fedora -l '\EFI\fedora\grubx64.efi' -d ${disk} -c
+  efibootmgr -L fedora -l '\EFI\fedora\grubx64.efi' -d ${device} -c
 fi
