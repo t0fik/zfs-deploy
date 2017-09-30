@@ -13,3 +13,10 @@ Wants=zfs.target
 Before=systemd-random-seed.service
 EOF
 
+mkdir -p ${dropin_dir}/zfs-mount.service.d
+cat >${dropin_dir}/zfs-mount.service.d/dependencies.conf << EOF
+#ZFS related dependencies
+[Unit]
+Before=systemd-backlight@.service systemd-rfkill.service
+EOF
+
