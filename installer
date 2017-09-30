@@ -1,0 +1,30 @@
+#!/bin/bash
+
+
+
+function confirm(){
+  local stage=$1
+  while true;do
+    read -p "Do you want run $stage (yes or no): " ans
+    case $ans in
+      [Yy]*) return 0;;
+      [Nn]*) return 1;;
+    esac
+    echo "Type yes or no"
+  done
+}
+
+
+path=$(realpath $0)
+path=$(dirname $path)
+
+stage=$(basename $0)
+stage=${stage:0:1}
+
+for script in $path/${stage}[1-9]*;do
+  if [[ "$(basename $script)" =~ "optional" ]];then
+    confirm $(basename $script) || continue
+  fi
+  $script
+done
+
