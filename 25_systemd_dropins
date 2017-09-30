@@ -9,14 +9,20 @@ mkdir -p ${dropin_dir}/local-fs.target.d
 cat >${dropin_dir}/local-fs.target.d/zfs.conf << EOF
 #ZFS related dependencies
 [Unit]
-Wants=zfs.target
-Before=systemd-random-seed.service
+Wants=zfs-mount.service
 EOF
 
 mkdir -p ${dropin_dir}/zfs-mount.service.d
 cat >${dropin_dir}/zfs-mount.service.d/dependencies.conf << EOF
 #ZFS related dependencies
 [Unit]
-Before=systemd-backlight@.service systemd-rfkill.service
+Before=systemd-rfkill.service systemd-random-seed.service
+EOF
+
+mkdir -p ${dropin_dir}/systemd-backlight@.service.d
+cat >${dropin_dir}/systemd-backlight@.service.d/zfs.conf << EOF
+#ZFS related dependencies
+[Unit]
+After=zfs-mount.service
 EOF
 
