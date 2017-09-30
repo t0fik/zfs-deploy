@@ -22,7 +22,11 @@ efi_part=${efi_part}
 encryption=yes
 EOF
 
+if [[ "$(cat /sys/block/$(basename $device)/queue/rotational)" == "0" ]];then
+  opts="$opts,discard"
+fi
+
 mkdir -p ${TEMP_DIR}/etc
 cat > ${TEMP_DIR}/etc/crypttab << EOF
-cryptroot UUID=$(cryptsetup luksUUID $install_part)
+cryptroot UUID=$(cryptsetup luksUUID $install_part) none ${opts:1}
 EOF
