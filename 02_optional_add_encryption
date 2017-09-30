@@ -15,7 +15,7 @@ cryptsetup luksFormat --cipher aes-xts-plain64 --key-size 512 --hash sha512 ${in
 cryptsetup luksOpen ${install_part} cryptroot
 
 cat > ${TEMP_DIR}/install_device << EOF
-disk=${disk}
+device=${device}
 luks_device=${install_part}
 install_part=/dev/mapper/cryptroot
 efi_part=${efi_part}
