@@ -11,7 +11,7 @@ dnf -y --installroot=${SYSROOT} --releasever=26 install \
   efibootmgr \
   vim-enhanced htop \
   bash-completion \
-  grub2-efi grub2-efi-modules \
+  grub2-efi grub2-efi-modules shim\
   acpid
 
 

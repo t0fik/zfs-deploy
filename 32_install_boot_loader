@@ -49,5 +49,5 @@ chroot ${SYSROOT} $script
 rm -f ${SYSROOT}/$script
 
 if [ -z "$(efibootmgr|grep FedoraZFS)" ];then
-  efibootmgr -L FedoraZFS -l '\EFI\fedora\grubx64.efi' -d ${device} -c
+  efibootmgr -L FedoraZFS -l '\EFI\fedora\shim.efi' -d ${device} -c
 fi
