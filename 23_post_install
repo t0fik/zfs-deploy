@@ -27,7 +27,8 @@ cat > ${SYSROOT}/$script <<EOF
 #!/bin/bash
 authconfig --enableshadow --passalgo=sha512 --enablesssd --enablesssdauth --update
 echo '$password' | passwd --stdin root
-timedatectl set-timezone Europe/Warsaw
+echo 'LANG="en_US.utf8"' > /etc/locale.conf
+ln -fs ../usr/share/zoneinfo/Europe/Warsaw /etc/localtime
 hostnamectl set-hostname ${hostname}
 EOF
 chmod 755 ${SYSROOT}/$script
