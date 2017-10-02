@@ -2,14 +2,13 @@
 
 . $(dirname $0)/config
 
-dnf -y --installroot=${SYSROOT} --releasever=26 install \
+script=$(mktemp -u)
+cat > ${SYSROOT}/$script <<EOF
+dnf -y install \
   xorg-x11-drv-libinput \
   xorg-x11-server-Xorg \
   lightdm \
   @Xfce
-
-script=$(mktemp -u )
-cat > ${SYSROOT}/$script <<EOF
 systemctl enable lightdm
 systemctl set-default graphical.target
 EOF
