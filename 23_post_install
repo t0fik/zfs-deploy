@@ -21,15 +21,24 @@ done
 echo "Set hostname"
 read -p "Hostname: " hostname
 
+echo "Set locale"
+read -p "Locale (default en_US.utf8): " locale
+if [[ -z "$locale" ]];then
+  locale='en_US.utf8'
+fi
+
+read -p "Timezone (default: Europe/Warsaw): " timezone
+[[ -z "$timezone" ]] && timezone='Europe/Warsaw'
+
 script=$(mktemp -u )
 
 cat > ${SYSROOT}/$script <<EOF
 #!/bin/bash
 authconfig --enableshadow --passalgo=sha512 --enablesssd --enablesssdauth --update
 echo '$password' | passwd --stdin root
-echo 'LANG="en_US.utf8"' > /etc/locale.conf
-ln -fs ../usr/share/zoneinfo/Europe/Warsaw /etc/localtime
-hostnamectl set-hostname ${hostname}
+echo 'LANG="${locale}"' > /etc/locale.conf
+ln -fs ../usr/share/zoneinfo/${timezone} /etc/localtime
+echo ${hostname} > /etc/hostname
 EOF
 chmod 755 ${SYSROOT}/$script
 
