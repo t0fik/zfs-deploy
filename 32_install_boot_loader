@@ -5,6 +5,7 @@
 
 
 cat > ${SYSROOT}/etc/default/grub << 'EOF'
+GRUB_DISABLE_OS_PROBER=true
 GRUB_TIMEOUT=5
 GRUB_DISTRIBUTOR="$(sed 's, release .*$,,g' /etc/system-release)"
 GRUB_DEFAULT=saved
