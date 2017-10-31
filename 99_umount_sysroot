@@ -2,12 +2,13 @@
 
 . $(dirname $0)/config
 
-while read; do 
-  umount $REPLY
-  sleep 1
-done < <(mount|awk '$3 ~/\/sysroot\/sys/{print $3}'|sort -r)
-umount ${SYSROOT}/{dev,run,proc}
-umount ${SYSROOT}/boot/efi
+#while read; do 
+#  umount $REPLY
+#  sleep 1
+#done < <(mount|awk '$3 ~/\/sysroot\/sys/{print $3}'|sort -r)
+#umount ${SYSROOT}/{dev,run,proc}
+#umount ${SYSROOT}/boot/efi
+#sleep 1
+umount --recursive ${SYSROOT}
 sleep 1
-
 zpool export rpool
