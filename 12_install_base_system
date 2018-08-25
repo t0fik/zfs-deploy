@@ -9,7 +9,7 @@ dnf -y install \
   @core kernel \
   @standard \
   zfs zfs-dracut zfs-rootfs \
-  zfs-beadm zfs-beadm-dracut \
+  zfs-beadm zfs-beadm-dracut zfs-beadm-grub2-tools \
   efibootmgr \
   vim-enhanced htop \
   bash-completion \
