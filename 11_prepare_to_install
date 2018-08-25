@@ -1,9 +1,12 @@
 #!/bin/bash
 
+
+os_release=$( lsb_release -r|awk '{print $NF}' )
+
 . $(dirname $0)/config
 zpool import -R ${SYSROOT} rpool
 
-dnf -y --installroot=${SYSROOT} --releasever=26 install \
+dnf -y --installroot=${SYSROOT} --releasever=$os_release install \
   filesystem \
   fedora-release \
   fedora-repos \
@@ -28,7 +31,7 @@ mount -t efivarfs efivarfs ${SYSROOT}/sys/firmware/efi/efivars
 mount $efi ${SYSROOT}/boot/efi
 
 
-dnf -y --installroot=${SYSROOT} --releasever=26 install \
+dnf -y --installroot=${SYSROOT} --releasever=$os_release install \
   dnf
 
 #cp -fr $(dirname $0) ${SYSROOT}
