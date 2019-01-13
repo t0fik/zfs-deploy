@@ -1,0 +1,24 @@
+#!/bin/bash
+
+. $(dirname $0)/config
+. ${TEMP_DIR}/install_device
+
+
+# Generate /etc/hostid file to prevent hostid changes after kernel update.
+# Causing rpool import error.
+
+
+script=$(mktemp -u )
+
+cat > ${SYSROOT}/$script <<"EOF"
+#!/bin/bash
+/usr/sbin/genhostid
+for kver in $(rpm -q kernel --qf '%{VERSION}-%{RELEASE}.%{ARCH}\n'|sort|tail -n1);do
+  dracut -f --kver ${kver}
+done
+EOF
+
+chmod 755 ${SYSROOT}/$script
+chroot ${SYSROOT} $script
+rm -f ${SYSROOT}/$script
+
