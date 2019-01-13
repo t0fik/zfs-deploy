@@ -28,6 +28,7 @@ efi=$(awk '$2=="/boot/efi"{print $1}' ${TEMP_DIR}/etc/fstab)
 mkdir -p ${SYSROOT}/boot/efi
 
 mount -t efivarfs efivarfs ${SYSROOT}/sys/firmware/efi/efivars
+mount -t selinuxfs selinuxfs ${SYSROOT}/sys/fs/selinux
 mount $efi ${SYSROOT}/boot/efi
 
 
