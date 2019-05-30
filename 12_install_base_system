@@ -14,7 +14,7 @@ dnf -y install \
   vim-enhanced htop \
   bash-completion \
   grub2-efi grub2-efi-modules shim \
-  acpid
+  acpid python3-dnf-plugin-beadm 
 EOF
 chmod 755 ${SYSROOT}/$script
 chroot ${SYSROOT} $script
